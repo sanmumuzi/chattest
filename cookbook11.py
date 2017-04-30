@@ -119,15 +119,18 @@
 #
 
 from socket import socket, AF_INET, SOCK_STREAM
+import time
 
 def echo_handle(address, client_sock):
-    print('Got connection from {}'.format(address))
+    print('Got connection from {}:{}'.format(address[0], address[1]))
+    client_sock.send(b'Welcome!')
     while True:
-        msg = client_sock.recv(8192)
-        if not msg:
-            break
+        msg = client_sock.recv(1024)
+        # time.sleep(1)
+        if not msg: break
         client_sock.sendall(msg)
     client_sock.close()
+    print('Connection from {}:{} closed.'.format(address[0], address[1]))
 
 def echo_server(address, backlog=5):
     sock = socket(AF_INET, SOCK_STREAM)
