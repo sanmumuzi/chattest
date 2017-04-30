@@ -127,7 +127,7 @@ def echo_handle(address, client_sock):
     while True:
         msg = client_sock.recv(1024)
         # time.sleep(1)
-        if not msg: break
+        if not msg and msg.decode('utf-8') == 'exit': break
         client_sock.sendall(msg)
     client_sock.close()
     print('Connection from {}:{} closed.'.format(address[0], address[1]))
