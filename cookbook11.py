@@ -120,6 +120,7 @@
 
 from socket import socket, AF_INET, SOCK_STREAM
 import time
+import threading
 
 def echo_handle(address, client_sock):
     print('Got connection from {}:{}'.format(address[0], address[1]))
@@ -127,7 +128,7 @@ def echo_handle(address, client_sock):
     while True:
         msg = client_sock.recv(1024)
         # time.sleep(1)
-        if not msg and msg.decode('utf-8') == 'exit': break
+        if not msg or msg == b'exit': break
         client_sock.sendall(msg)
     client_sock.close()
     print('Connection from {}:{} closed.'.format(address[0], address[1]))
@@ -138,7 +139,9 @@ def echo_server(address, backlog=5):
     sock.listen(backlog)
     while True:
         client_sock, client_addr = sock.accept()
-        echo_handle(client_addr, client_sock)
+        t = threading.Thread(target=echo_handle, args=(client_addr, client_sock))
+        t.start()
+        # echo_handle(client_addr, client_sock)
 
 if __name__ == '__main__':
-    echo_server(('', 20005))
+    echo_server(('', 20010))
