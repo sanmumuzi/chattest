@@ -4,7 +4,8 @@ from tkinter import *  # 直接使用，但是个人感觉可能产生冲哭
 # import tkinter as tk  ## 每次使用都需要加tk.xxx
 
 s = socket(AF_INET, SOCK_STREAM)
-s.connect(('127.0.0.1', 20014))
+# s.connect(('127.0.0.1', 20014))
+s.connect(('120.25.242.228', 20020))
 
 root = Tk()
 text = Text(root)
